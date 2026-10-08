@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Celsius to Fahrenheit</title>
+</head>
+
+<body>
+
+    <h1>Celsius → Fahrenheit</h1>
+
+    <input
+        id="celsius"
+        type="number"
+        placeholder="Enter Celsius"
+    >
+
+    <button onclick="predict()">
+        Predict
+    </button>
+
+    <h2 id="result"></h2>
+
+
+    <script>
+
+        async function predict() {
+
+            // Get Celsius value from input box
+            const celsius =
+                document.getElementById("celsius").value;
+
+
+            // Send Celsius value to Flask
+            const response = await fetch("/predict", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    celsius: celsius
+                })
+            });
+
+
+            // Receive prediction from Flask
+            const data = await response.json();
+
+
+            // Display result
+            document.getElementById("result").innerText =
+                data.celsius + "°C = "
+                + data.fahrenheit + "°F";
+        }
+
+    </script>
+
+</body>
+</html>
